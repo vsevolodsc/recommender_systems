@@ -1,5 +1,7 @@
 /**
- * Created by vsevo on 13/02/2017.
+ * Created by Vsevolods Caka on 13/02/2017.
+ *
+ * WIP: DO I really need this class ?
  */
 public class Rating implements Statistics {
 
@@ -12,7 +14,6 @@ public class Rating implements Statistics {
     public double item_median() {
         return 0;
     }
-
     @Override
     public double std_dev() {
         return 0;
