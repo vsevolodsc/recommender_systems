@@ -1,44 +1,65 @@
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Vsevolods Caka - 13340321 on 07/02/2017.
  */
 
 public class Item implements Statistics{
-    private HashMap<HashMap<Integer, Integer>, Integer> item;
-    //Key - a hashmap with
-    //          key: User Int
-    //          value: Rating
-    //Value - item_id
-    Item(List<List<Integer>> data){
+private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
+    Item(){
         set_item();
     }
 
     public double item_mean(){
-        return 0;
+        int sum = 0;
+        for(int i: get_item_ratings()){
+            sum += i;
+        }
+        return sum/get_item_ratings().size();
     }
 
     public double item_median(){
-        return 0;
+        return get_item_ratings().get((int)Math.ceil(get_item_ratings().size()/2));
     }
 
     public double std_dev(){
+        
         return 0;
     }
 
     public int getMax_rating(){
-        return 0;
+        return Collections.max(get_item_ratings());
     }
 
     public int getMin_rating(){
-        return 0;
+        return Collections.min(get_item_ratings());
     }
 
     public void set_item(){
 
     }
-    public HashMap<HashMap<Integer, Integer>, Integer> get_item(){
+    public HashMap<Integer, HashMap<Integer, Integer>> get_item(){
         return this.item;
+    }
+
+    public int get_item_id(){
+        for(int key: item.keySet()){
+            return key;
+        }
+        return 0;
+    }
+
+    public List<Integer> get_item_users(){
+        for(HashMap<Integer,Integer> hm: item.values()){
+            return new ArrayList<>(hm.keySet());
+        }
+        return null;
+    }
+
+    public List<Integer> get_item_ratings(){
+        for(HashMap<Integer,Integer> hm: item.values()){
+            return new ArrayList<>(hm.values());
+        }
+        return null;
     }
 }
