@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5737791-01f8-4915-87fa-001b75499ff2" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Parser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Item.java" afterPath="$PROJECT_DIR$/src/Item.java" />
     </list>
     <ignored path="recommender_system.iws" />
@@ -36,15 +38,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Item.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Item.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Item.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+            <state relative-caret-position="198">
+              <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
               <folding>
-                <element signature="e#214#215#0" expanded="true" />
-                <element signature="e#240#241#0" expanded="true" />
                 <element signature="method#item_mean#0;class#Item#0" expanded="false" />
+                <element signature="method#std_dev#0;class#Item#0" expanded="false" />
                 <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
                 <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
                 <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
@@ -53,10 +54,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Parser.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Parser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#200#201#0" expanded="true" />
+                <element signature="e#224#225#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="66">
               <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -118,6 +133,7 @@
         <option value="$PROJECT_DIR$/src/Rating.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Item.java" />
+        <option value="$PROJECT_DIR$/src/Parser.java" />
       </list>
     </option>
   </component>
@@ -539,9 +555,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#214#215#0" expanded="true" />
-            <element signature="e#240#241#0" expanded="true" />
             <element signature="method#item_mean#0;class#Item#0" expanded="false" />
+            <element signature="method#std_dev#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
@@ -576,9 +591,8 @@
         <state relative-caret-position="396">
           <caret line="28" column="5" selection-start-line="10" selection-start-column="3" selection-end-line="28" selection-end-column="5" />
           <folding>
-            <element signature="e#214#215#0" expanded="true" />
-            <element signature="e#240#241#0" expanded="true" />
             <element signature="method#item_mean#0;class#Item#0" expanded="false" />
+            <element signature="method#std_dev#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
@@ -613,9 +627,8 @@
         <state relative-caret-position="396">
           <caret line="28" column="5" selection-start-line="10" selection-start-column="3" selection-end-line="28" selection-end-column="5" />
           <folding>
-            <element signature="e#214#215#0" expanded="true" />
-            <element signature="e#240#241#0" expanded="true" />
             <element signature="method#item_mean#0;class#Item#0" expanded="false" />
+            <element signature="method#std_dev#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
             <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
@@ -647,17 +660,6 @@
     <entry file="file://$PROJECT_DIR$/src/Profile.java" />
     <entry file="file://$PROJECT_DIR$/src/Profile.java" />
     <entry file="file://$PROJECT_DIR$/src/Data.java" />
-    <entry file="file://$PROJECT_DIR$/src/Rating.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding>
-            <element signature="e#255#256#0" expanded="true" />
-            <element signature="e#279#280#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Statistics.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -679,9 +681,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+          <folding>
+            <element signature="method#item_mean#0;class#Item#0" expanded="false" />
+            <element signature="method#std_dev#0;class#Item#0" expanded="false" />
+            <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
+            <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
+            <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Rating.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="e#255#256#0" expanded="true" />
+            <element signature="e#279#280#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="66">
           <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -689,17 +716,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Item.java">
+    <entry file="file://$PROJECT_DIR$/src/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
+        <state relative-caret-position="242">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
           <folding>
-            <element signature="e#214#215#0" expanded="true" />
-            <element signature="e#240#241#0" expanded="true" />
-            <element signature="method#item_mean#0;class#Item#0" expanded="false" />
-            <element signature="method#get_item_id#0;class#Item#0" expanded="false" />
-            <element signature="method#get_item_users#0;class#Item#0" expanded="false" />
-            <element signature="method#get_item_ratings#0;class#Item#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#200#201#0" expanded="true" />
+            <element signature="e#224#225#0" expanded="true" />
           </folding>
         </state>
       </provider>

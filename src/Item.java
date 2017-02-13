@@ -7,7 +7,7 @@ import java.util.*;
 public class Item implements Statistics{
 private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
     Item(){
-        set_item();
+        //set_item();
     }
 
     public double item_mean(){
@@ -23,8 +23,12 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
     }
 
     public double std_dev(){
-        
-        return 0;
+        double mean = item_mean();
+        int sum = 0;
+        for(int i: get_item_ratings()) {
+            sum += (i - mean);
+        }
+        return Math.sqrt(sum/get_item_ratings().size());
     }
 
     public int getMax_rating(){
@@ -35,7 +39,7 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         return Collections.min(get_item_ratings());
     }
 
-    public void set_item(){
+    public void set_item(int item, HashMap){
 
     }
     public HashMap<Integer, HashMap<Integer, Integer>> get_item(){
