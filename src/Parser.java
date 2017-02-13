@@ -11,9 +11,9 @@ public class Parser {
         data = d;
     }
     public HashMap<Integer, HashMap<Integer, Integer>> list_items(){
-
+        return null;
     }
     public HashMap<Integer, HashMap<Integer, Integer>> list_users(){
-
+        return null;
     }
 }
