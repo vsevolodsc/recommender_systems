@@ -8,7 +8,7 @@ public class Main {
     private static List<List<Integer>> fileIn = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("D:/uni-16-17/collective_intelligence/recommender_system/src/100k.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("src/100k.csv"));
         String line;
         while ((line = br.readLine()) != null) {
             String[] elts = line.split(",");
