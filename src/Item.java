@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Created by Vsevolods Caka - 13340321 on 07/02/2017.
  */
-public class Item implements  Statistics{
+public class Item implements Statistics{
     Item(List<List<Integer>> data){
 
     }
