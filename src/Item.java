@@ -39,7 +39,7 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         return Collections.min(get_item_ratings());
     }
 
-    public void set_item(int item, HashMap){
+    public void set_item(int item, HashMap<Integer, Integer> usr_rt){
 
     }
     public HashMap<Integer, HashMap<Integer, Integer>> get_item(){

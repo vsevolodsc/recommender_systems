@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,5 +10,10 @@ public class Parser {
     Parser(List<List<Integer>> d){
         data = d;
     }
-    public HashMap<>
+    public HashMap<Integer, HashMap<Integer, Integer>> list_items(){
+
+    }
+    public HashMap<Integer, HashMap<Integer, Integer>> list_users(){
+
+    }
 }

@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Vsevolods Caka - 13340321 on 07/02/2017.
  */
 public class User implements Statistics{
-    private HashMap<HashMap<Integer, Integer>, Integer> usr;
+    private HashMap<Integer, HashMap<Integer, Integer>> usr;
     User(){
         //Key - a hashmap with
         //          key: Item
@@ -14,29 +17,56 @@ public class User implements Statistics{
     }
 
     public double item_mean(){
-        return 0;
+        int sum = 0;
+        for(int i: get_usr_ratings()){
+            sum += i;
+        }
+        return sum/get_usr_ratings().size();
     }
 
     public double item_median(){
-        return 0;
+        return get_usr_ratings().get((int)Math.ceil(get_usr_ratings().size()/2));
     }
 
     public double std_dev(){
-        return 0;
+        double mean = item_mean();
+        int sum = 0;
+        for(int i: get_usr_ratings()) {
+            sum += (i - mean);
+        }
+        return Math.sqrt(sum/get_usr_ratings().size());
     }
 
     public int getMax_rating(){
-        return 0;
+        return Collections.max(get_usr_ratings());
     }
 
     public int getMin_rating(){
+        return Collections.min(get_usr_ratings());
+    }
+
+    public int get_usr_id(){
+        for(int key: usr.keySet()){
+            return key;
+        }
         return 0;
     }
 
     private void set_user(){
 
     }
-    public HashMap<HashMap<Integer, Integer>, Integer> get_item(){
-        return this.usr;
+
+    public List<Integer> get_usr_items(){
+        for(HashMap<Integer,Integer> hm: usr.values()){
+            return new ArrayList<>(hm.keySet());
+        }
+        return null;
+    }
+
+    public List<Integer> get_usr_ratings(){
+        for(HashMap<Integer,Integer> hm: usr.values()){
+            return new ArrayList<>(hm.values());
+        }
+        return null;
     }
 }
