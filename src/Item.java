@@ -6,8 +6,9 @@ import java.util.*;
 
 public class Item implements Statistics{
 private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
-    Item(){
-        //set_item();
+
+    Item(HashMap<Integer, HashMap<Integer, Integer>> in){
+        item = in;
     }
 
     public double item_mean(){
@@ -39,9 +40,6 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         return Collections.min(get_item_ratings());
     }
 
-    public void set_item(int item, HashMap<Integer, Integer> usr_rt){
-
-    }
     public HashMap<Integer, HashMap<Integer, Integer>> get_item(){
         return this.item;
     }

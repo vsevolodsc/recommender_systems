@@ -8,12 +8,9 @@ import java.util.List;
  */
 public class User implements Statistics{
     private HashMap<Integer, HashMap<Integer, Integer>> usr;
-    User(){
-        //Key - a hashmap with
-        //          key: Item
-        //          value: Rating
-        //Value - User id
-        set_user();
+
+    User(HashMap<Integer, HashMap<Integer, Integer>> in){
+        usr = in;
     }
 
     public double item_mean(){
@@ -50,10 +47,6 @@ public class User implements Statistics{
             return key;
         }
         return 0;
-    }
-
-    private void set_user(){
-
     }
 
     public List<Integer> get_usr_items(){

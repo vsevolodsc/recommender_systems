@@ -20,7 +20,9 @@ public class Main {
             token.add(2, Integer.valueOf(elts[2]));
             fileIn.add(token);
         }
-        print_file();
+        //print_file();
+        Parser parser = new Parser(fileIn);
+        System.out.println(parser.list_users());
     }
     public static void print_file(){
         for(int i = 0; i < fileIn.size(); i++){
