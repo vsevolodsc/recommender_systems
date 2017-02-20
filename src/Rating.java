@@ -6,12 +6,12 @@
 public class Rating implements Statistics {
 
     @Override
-    public double item_mean() {
+    public double object_mean() {
         return 0;
     }
 
     @Override
-    public double item_median() {
+    public double object_median() {
         return 0;
     }
     @Override

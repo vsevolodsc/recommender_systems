@@ -1,19 +1,16 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Vsevolods Caka - 13340321 on 07/02/2017.
  */
 public class User implements Statistics{
-    private HashMap<Integer, HashMap<Integer, Integer>> usr;
+    private Map.Entry<Integer, HashMap<Integer, Integer>> usr;
 
-    User(HashMap<Integer, HashMap<Integer, Integer>> in){
+    User(Map.Entry<Integer, HashMap<Integer, Integer>> in){
         usr = in;
     }
 
-    public double item_mean(){
+    public double object_mean(){
         int sum = 0;
         for(int i: get_usr_ratings()){
             sum += i;
@@ -21,15 +18,15 @@ public class User implements Statistics{
         return sum/get_usr_ratings().size();
     }
 
-    public double item_median(){
+    public double object_median(){
         return get_usr_ratings().get((int)Math.ceil(get_usr_ratings().size()/2));
     }
 
     public double std_dev(){
-        double mean = item_mean();
-        int sum = 0;
+        double mean = object_mean();
+        double sum = 0;
         for(int i: get_usr_ratings()) {
-            sum += (i - mean);
+            sum += Math.pow((i - mean),2.0);
         }
         return Math.sqrt(sum/get_usr_ratings().size());
     }
@@ -43,23 +40,16 @@ public class User implements Statistics{
     }
 
     public int get_usr_id(){
-        for(int key: usr.keySet()){
-            return key;
-        }
-        return 0;
+        return usr.getKey();
     }
 
     public List<Integer> get_usr_items(){
-        for(HashMap<Integer,Integer> hm: usr.values()){
-            return new ArrayList<>(hm.keySet());
-        }
-        return null;
+        HashMap<Integer,Integer> hm= usr.getValue();
+        return new ArrayList<>(hm.keySet());
     }
 
     public List<Integer> get_usr_ratings(){
-        for(HashMap<Integer,Integer> hm: usr.values()){
-            return new ArrayList<>(hm.values());
-        }
-        return null;
+        HashMap<Integer,Integer> hm= usr.getValue();
+        return new ArrayList<>(hm.values());
     }
 }

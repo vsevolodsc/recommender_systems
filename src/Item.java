@@ -5,13 +5,13 @@ import java.util.*;
  */
 
 public class Item implements Statistics{
-private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
+private Map.Entry<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
 
-    Item(HashMap<Integer, HashMap<Integer, Integer>> in){
+    Item(Map.Entry<Integer, HashMap<Integer, Integer>> in){
         item = in;
     }
 
-    public double item_mean(){
+    public double object_mean(){
         int sum = 0;
         for(int i: get_item_ratings()){
             sum += i;
@@ -19,15 +19,15 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         return sum/get_item_ratings().size();
     }
 
-    public double item_median(){
+    public double object_median(){
         return get_item_ratings().get((int)Math.ceil(get_item_ratings().size()/2));
     }
 
     public double std_dev(){
-        double mean = item_mean();
+        double mean = object_mean();
         int sum = 0;
         for(int i: get_item_ratings()) {
-            sum += (i - mean);
+            sum += Math.pow((i - mean),2);
         }
         return Math.sqrt(sum/get_item_ratings().size());
     }
@@ -40,28 +40,22 @@ private HashMap<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         return Collections.min(get_item_ratings());
     }
 
-    public HashMap<Integer, HashMap<Integer, Integer>> get_item(){
+    public Map.Entry<Integer, HashMap<Integer, Integer>> get_item(){
         return this.item;
     }
 
     public int get_item_id(){
-        for(int key: item.keySet()){
-            return key;
-        }
-        return 0;
+
+        return item.getKey();
     }
 
     public List<Integer> get_item_users(){
-        for(HashMap<Integer,Integer> hm: item.values()){
-            return new ArrayList<>(hm.keySet());
-        }
-        return null;
+        HashMap<Integer,Integer> hm= item.getValue();
+        return new ArrayList<>(hm.keySet());
     }
 
-    public List<Integer> get_item_ratings(){
-        for(HashMap<Integer,Integer> hm: item.values()){
-            return new ArrayList<>(hm.values());
-        }
-        return null;
+    public List<Integer> get_item_ratings() {
+        HashMap<Integer, Integer> hm = item.getValue();
+        return new ArrayList<>(hm.values());
     }
 }
