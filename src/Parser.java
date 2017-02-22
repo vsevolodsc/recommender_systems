@@ -23,7 +23,6 @@ public class Parser {
             else{
                 out.put(entry.get(1), temp);
             }
-
         }
         return out;
     }

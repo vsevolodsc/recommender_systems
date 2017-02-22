@@ -13,8 +13,7 @@ public class Main {
         read_file();
         Parser parser = new Parser(fileIn);
         Populate pop = new Populate(parser);
-        System.out.println(pop.cant_predict());
-    }
+        System.out.println(pop.coverage());    }
 
 
     private static void read_file() throws IOException{
