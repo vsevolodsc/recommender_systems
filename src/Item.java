@@ -58,4 +58,16 @@ private Map.Entry<Integer, HashMap<Integer, Integer>> item;    //Key - Item ID,
         HashMap<Integer, Integer> hm = item.getValue();
         return new ArrayList<>(hm.values());
     }
+
+    public int total_ratings(int rating){
+        int count =0;
+        for (int i: get_item_ratings()){
+            if(i==rating){
+                count++;
+            }
+        }
+        return count;
+    }
+
+
 }

@@ -7,9 +7,11 @@ import java.util.List;
  */
 public class Parser {
     private List<List<Integer>> data = new ArrayList<>();
+
     Parser(List<List<Integer>> d){
         data = d;
     }
+
     public HashMap<Integer, HashMap<Integer, Integer>> list_items(){
         HashMap<Integer, HashMap<Integer, Integer>> out = new HashMap<>();
         for(List<Integer> entry: data){
@@ -25,6 +27,7 @@ public class Parser {
         }
         return out;
     }
+
     public HashMap<Integer, HashMap<Integer, Integer>> list_users(){
         HashMap<Integer, HashMap<Integer, Integer>> out = new HashMap<>();
         for(List<Integer> entry: data){

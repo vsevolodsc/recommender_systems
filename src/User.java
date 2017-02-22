@@ -44,12 +44,26 @@ public class User implements Statistics{
     }
 
     public List<Integer> get_usr_items(){
-        HashMap<Integer,Integer> hm= usr.getValue();
-        return new ArrayList<>(hm.keySet());
+        return new ArrayList<>(usr.getValue().keySet());
     }
 
     public List<Integer> get_usr_ratings(){
-        HashMap<Integer,Integer> hm= usr.getValue();
-        return new ArrayList<>(hm.values());
+        return new ArrayList<>(usr.getValue().values());
+    }
+
+    public int get_itemrating(int item){
+        HashMap<Integer, Integer> ui = usr.getValue();
+        return ui.get(item);
+    }
+
+    public boolean has_ratedItem(int item){
+        boolean hasRated = false;
+        for(int i: get_usr_items()){
+            if(i==item){
+                hasRated = true;
+                break;
+            }
+        }
+        return hasRated;
     }
 }
