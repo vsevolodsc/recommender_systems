@@ -13,7 +13,11 @@ public class Main {
         read_file();
         Parser parser = new Parser(fileIn);
         Populate pop = new Populate(parser);
-        System.out.println(pop.coverage());    }
+        System.out.println(pop.coverage());
+        //System.out.println(pop.getUsers());
+        //System.out.println(pop.get_item_ids());
+
+    }
 
 
     private static void read_file() throws IOException{

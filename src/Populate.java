@@ -30,18 +30,18 @@ public class Populate {
     public double mean_item_rating(int user_id, int item_id){
         int sum =0;
         int count = 0;
-        Iterator it = users.keySet().iterator();
-        while(it.hasNext()){
-            if((int)it.next()!= user_id){
-                if(users.has_ratedItem(item_id)){
-                    count++;
-                    sum += u.get_itemrating(item_id);
+        for(int i: users.keySet()){
+            if(i != user_id){
+                if(users.get(i).keySet().size() > 1){
+                    if(users.get(i).containsKey(item_id)) {
+                        count++;
+                        sum += users.get(i).get(item_id);
+                    }
                 }
             }
         }if(count==0){
             return 0.0;
         }
-        System.out.println("Hi");
         return sum/count;
     }
 
