@@ -30,12 +30,13 @@ public class Populate {
     public double mean_item_rating(int user_id, int item_id){
         int sum =0;
         int count = 0;
-        for(int i: users.keySet()){
-            if(i != user_id){
-                if(users.get(i).keySet().size() > 1){
-                    if(users.get(i).containsKey(item_id)) {
+        for(Map.Entry<Integer, HashMap<Integer, Integer>> en: users.entrySet()){
+            int key = en.getKey();
+            if(key != user_id){
+                if(en.getValue().entrySet().size() > 1){
+                    if(en.getValue().containsKey(item_id)) {
                         count++;
-                        sum += users.get(i).get(item_id);
+                        sum += en.getValue().get(item_id);
                     }
                 }
             }
