@@ -85,5 +85,4 @@ public class Populate {
         return 100000/denom;
     }
 
-
 }
