@@ -22,7 +22,9 @@ public class Item implements Statistics{
     }
 
     public double object_median(){
-        return get_item_ratings().get((int)Math.ceil(get_item_ratings().size()/2));
+        List<Integer> sort = new ArrayList<>(get_item_ratings());
+        Collections.sort(sort);
+        return sort.get((int)Math.ceil(get_item_ratings().size()/2));
     }
 
     public double std_dev(){
@@ -42,8 +44,8 @@ public class Item implements Statistics{
         return Collections.min(get_item_ratings());
     }
 
-    public Map.Entry<Integer, HashMap<Integer, Integer>> get_item(){
-        return this.item;
+    public Item get_item(){
+        return this;
     }
 
     public int get_item_id(){
@@ -54,12 +56,8 @@ public class Item implements Statistics{
         return user_rating.keySet();
     }
 
-    public List<Integer> get_item_ratings() {
-        List<Integer> rating = new ArrayList<>();
-        for(int i: user_rating.values()){
-            rating.add(i);
-        }
-        return rating;
+    public Collection<Integer> get_item_ratings() {
+        return user_rating.values();
     }
 
     public int total_ratings(int rating){

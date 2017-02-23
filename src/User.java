@@ -2,12 +2,15 @@ import java.util.*;
 
 /**
  * Created by Vsevolods Caka - 13340321 on 07/02/2017.
+ *
  */
 public class User implements Statistics{
-    private Map.Entry<Integer, HashMap<Integer, Integer>> usr;
+    private int user_id;
+    private HashMap<Integer, Integer> item_rating;
 
-    User(Map.Entry<Integer, HashMap<Integer, Integer>> in){
-        usr = in;
+    User(int item, HashMap<Integer, Integer> in){
+        user_id = item;
+        item_rating = in;
     }
 
     public double object_mean(){
@@ -19,7 +22,9 @@ public class User implements Statistics{
     }
 
     public double object_median(){
-        return get_usr_ratings().get((int)Math.ceil(get_usr_ratings().size()/2));
+        List<Integer> sort = new ArrayList<>(get_usr_ratings());
+        Collections.sort(sort);
+        return sort.get((int)Math.ceil(get_usr_ratings().size()/2));
     }
 
     public double std_dev(){
@@ -40,21 +45,21 @@ public class User implements Statistics{
     }
 
     public int get_usr_id(){
-        return usr.getKey();
+        return user_id;
     }
 
-    public List<Integer> get_usr_items(){
-        return new ArrayList<>(usr.getValue().keySet());
+    public Set<Integer> get_usr_items(){
+        return item_rating.keySet();
     }
 
-    public List<Integer> get_usr_ratings(){
-        return new ArrayList<>(usr.getValue().values());
+    public Collection<Integer> get_usr_ratings(){
+        return item_rating.values();
     }
 
-    public int get_itemrating(int item){
+    /*public int get_itemrating(int item){
         HashMap<Integer, Integer> ui = usr.getValue();
         return ui.get(item);
-    }
+    }*/
 
     public boolean has_ratedItem(int item){
         boolean hasRated = false;
@@ -66,4 +71,5 @@ public class User implements Statistics{
         }
         return hasRated;
     }
+
 }
