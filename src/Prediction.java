@@ -98,18 +98,25 @@ public class Prediction {
         return items.keySet();
     }
 
-    public HashMap<Integer, List<Integer>> generate_neighbours(int user, int neigh_size){
-        //K-NN implemetation - in hashmap: key->target_user, value->N closest neighbours
-        HashMap<Integer, List<Integer>> output = new HashMap<>();
-        List<Integer> knn = new ArrayList<>();
-        HashMap<Integer, Integer> user_val = users.get(user);
-
-
-        return output;
+    public KnnEntry knn_single(int user, int neigh_size){
+        //K-NN implementation - in hashmap: key->target_user, value->N closest neighbours
+        HashMap<Double, Integer> distances = new HashMap<>(); //where key it the distance and value is user id
+        //with this strat, I wont have to sort it to get n closest users
+        HashMap<Integer, Integer> target = users.get(user);
+        for(Map.Entry<Integer, HashMap<Integer, Integer>> itr: users.entrySet()){
+            if(itr.getKey()==user){
+                continue;
+            }
+            HashMap<Integer, Integer> temp = itr.getValue();
+            double distance = euclid_distance(target, temp);
+            distances.put(distance, itr.getKey());
+        }
+        List<Integer> nbors = new ArrayList<>(distances.values());
+        List<Integer> out_prep = retrieve_n_fromlist(nbors, neigh_size);
+        return new KnnEntry(user, out_prep);
     }
 
     public double euclid_distance(HashMap<Integer, Integer> target,HashMap<Integer, Integer> users){
-        double distance =0;
         List<Integer> target_items = new ArrayList<>(target.keySet());
         List<Integer> user_items = new ArrayList<>(users.keySet());
         List<Integer> common = new ArrayList<>(target_items);
@@ -119,6 +126,14 @@ public class Prediction {
             dist += Math.pow(target.get(i)-users.get(i),2);
         }
         return dist/common.size();
+    }
+
+    public List<Integer> retrieve_n_fromlist(List<Integer> in, int n){
+        List<Integer> output = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            output.add(in.get(i));
+        }
+        return output;
     }
 
     public int cant_predict(){
