@@ -1,3 +1,4 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.io.*;
@@ -13,9 +14,16 @@ public class Main {
         read_file();
         Parser parser = new Parser(fileIn);
         Populate pop = new Populate(parser);
-        System.out.println(pop.coverage());
-        //System.out.println(pop.getUsers());
-        //System.out.println(pop.get_item_ids());
+
+        double total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pop.leave_one_out();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");
 
     }
 

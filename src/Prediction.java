@@ -1,12 +1,19 @@
+import java.io.*;
+import java.security.spec.ECField;
 import java.util.*;
 
 /**
  * Created by vsevo on 22/02/2017.
  */
-public class Populate {
+public class Prediction {
     private HashMap<Integer, HashMap<Integer, Integer>> users = new HashMap<>();
     private HashMap<Integer, HashMap<Integer, Integer>> items = new HashMap<>();
-    public Populate(Parser parser){
+    private FileWriter l1o_csv = null;
+    private final String COMMA_DELIM = ",";
+    private final String NEWLINE_DELIM = "\n";
+    private final String header = "user_id,item_id,actual_rating,predicted_rating,RMSE";
+
+    public Prediction(Parser parser){
         users = populate_users(parser);
         items = populate_items(parser);
     }
@@ -46,12 +53,58 @@ public class Populate {
         return sum/count;
     }
 
+    public double leave_one_out() throws IOException {
+        //Returns the average rmse
+        File l1o = new File("./L10-out.csv");
+        if(l1o.exists()){
+            l1o.delete();
+        }
+        l1o_csv = new FileWriter("./L10-out.csv");
+        l1o_csv.append(header);
+        l1o_csv.append(NEWLINE_DELIM);
+        int count =0;
+        int total_rmse=0;
+        for(int i=0; i<get_user_ids().size(); i++){
+            for(int j=0; j<get_item_ids().size(); j++) {
+                try{
+                    int rating = getUsers().get(i).get(j);
+                    double rmse = Math.abs(mean_item_rating(i, j) - rating);
+                    total_rmse += rmse;
+                    l1o_csv.append(String.valueOf(i));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(j));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(mean_item_rating(i, j)));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rating));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rmse));
+                    l1o_csv.append(NEWLINE_DELIM);
+                    count++;
+                }catch (Exception e){
+                }
+            }
+        }
+        l1o_csv.flush();
+        l1o_csv.close();
+        return (double)total_rmse/count;
+    }
+
     public Set<Integer> get_user_ids(){
         return users.keySet();
     }
 
     public Set<Integer> get_item_ids(){
         return items.keySet();
+    }
+
+    public HashMap<Integer, List<Integer>> generate_neighbours(int user, int neigh_size){
+        //K-NN implemetation - in hashmap: key->target_user, value->N closest neighbours
+        HashMap<Integer, List<Integer>> output = new HashMap<>();
+        List<Integer> knn = new ArrayList<>();
+        
+
+        return output;
     }
 
     public int cant_predict(){
@@ -67,7 +120,7 @@ public class Populate {
     }
 
     public double coverage(){
-       double denom = get_item_ids().size()*get_user_ids().size();
+        double denom = get_item_ids().size()*get_user_ids().size();
         double count =0;
         for(int i=0; i<get_user_ids().size(); i++){
             for(int j=0; j<get_item_ids().size(); j++){
