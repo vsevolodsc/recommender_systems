@@ -11,20 +11,21 @@ public class Main {
     private static List<List<Integer>> fileIn = new ArrayList<>();
 
     public static void main(String[] args)throws IOException {
-        read_file();
+        /*read_file();
         Parser parser = new Parser(fileIn);
-        Populate pop = new Populate(parser);
+        Prediction pred = new Prediction(parser);
 
         double total_time10=0;
         for(int i=0; i<10;i++){
             long startTime = System.currentTimeMillis();
-            pop.leave_one_out();
+            pred.leave_one_out();
             long endTime   = System.currentTimeMillis();
             long runTime = endTime - startTime;
             total_time10 +=runTime;
         }
         System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");
-
+*/
+        euclid_distance();
     }
 
 
@@ -47,6 +48,30 @@ public class Main {
         for(int i = 0; i < fileIn.size(); i++){
             System.out.println(fileIn.get(i));
         }
+    }
+
+
+    public static void euclid_distance(){
+        double distance =0;
+        List<Integer> target_items = new ArrayList<>();
+        target_items.add(1);
+        target_items.add(2);
+        target_items.add(3);
+        target_items.add(4);
+        target_items.add(5);
+        List<Integer> user_items = new ArrayList<>();
+        user_items.add(1);
+        user_items.add(3);
+        user_items.add(4);
+        user_items.add(6);
+        user_items.add(7);
+        List<Integer> common = new ArrayList<>(target_items);
+        common.retainAll(user_items);
+
+        for(int i: common){
+            System.out.println(i);
+        }
+
     }
 
 }

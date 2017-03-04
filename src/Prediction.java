@@ -102,9 +102,23 @@ public class Prediction {
         //K-NN implemetation - in hashmap: key->target_user, value->N closest neighbours
         HashMap<Integer, List<Integer>> output = new HashMap<>();
         List<Integer> knn = new ArrayList<>();
-        
+        HashMap<Integer, Integer> user_val = users.get(user);
+
 
         return output;
+    }
+
+    public double euclid_distance(HashMap<Integer, Integer> target,HashMap<Integer, Integer> users){
+        double distance =0;
+        List<Integer> target_items = new ArrayList<>(target.keySet());
+        List<Integer> user_items = new ArrayList<>(users.keySet());
+        List<Integer> common = new ArrayList<>(target_items);
+        common.retainAll(user_items);
+        double dist=0;
+        for(int i: common){
+            dist += Math.pow(target.get(i)-users.get(i),2);
+        }
+        return dist/common.size();
     }
 
     public int cant_predict(){
