@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -5,8 +6,8 @@ import java.util.List;
  */
 public class KnnEntry {
     private int user;
-    private List<Integer> neighbours;
-    KnnEntry(int target, List<Integer> n){
+    private HashMap<Integer, Double> neighbours;
+    KnnEntry(int target, HashMap<Integer, Double> n){
         user = target;
         neighbours = n;
     }
@@ -14,7 +15,7 @@ public class KnnEntry {
     public int get_user(){
         return user;
     }
-    public List<Integer> get_neighbours(){
+    public HashMap<Integer, Double> get_neighbours(){
         return neighbours;
     }
     public void print_knn(){

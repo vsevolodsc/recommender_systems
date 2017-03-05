@@ -13,21 +13,29 @@ public class Main {
     public static void main(String[] args)throws IOException {
         read_file();
         Parser parser = new Parser(fileIn);
-        Prediction pred = new Prediction(parser);
+        Prediction pred = new Prediction(parser,15);
 
         /*double total_time10=0;
         for(int i=0; i<10;i++){
             long startTime = System.currentTimeMillis();
-            pred.leave_one_out();
+            pred.leave_one_out_naive();
             long endTime   = System.currentTimeMillis();
             long runTime = endTime - startTime;
             total_time10 +=runTime;
         }
         System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");*/
-        for(int i=1; i<=100; i++) {
-            pred.knn_single(i, 10).print_knn();
+        double total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_knn();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
         }
-
+        System.out.println("Average runtime of 10 L1o tests of knn approach with k=5 : "+total_time10/1000+" seconds");
+        /*pred.leave_one_out_knn(10);
+        pred.leave_one_out_knn(15);
+        pred.leave_one_out_knn(20);*/
     }
 
 
@@ -53,27 +61,5 @@ public class Main {
     }
 
 
-    public static void euclid_distance(){
-        double distance =0;
-        List<Integer> target_items = new ArrayList<>();
-        target_items.add(1);
-        target_items.add(2);
-        target_items.add(3);
-        target_items.add(4);
-        target_items.add(5);
-        List<Integer> user_items = new ArrayList<>();
-        user_items.add(1);
-        user_items.add(3);
-        user_items.add(4);
-        user_items.add(6);
-        user_items.add(7);
-        List<Integer> common = new ArrayList<>(target_items);
-        common.retainAll(user_items);
-
-        for(int i: common){
-            System.out.println(i);
-        }
-
-    }
 
 }
