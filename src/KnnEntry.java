@@ -17,4 +17,8 @@ public class KnnEntry {
     public List<Integer> get_neighbours(){
         return neighbours;
     }
+    public void print_knn(){
+        System.out.println("User: "+user);
+        System.out.println(neighbours.toString());
+    }
 }

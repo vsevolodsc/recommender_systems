@@ -11,11 +11,11 @@ public class Main {
     private static List<List<Integer>> fileIn = new ArrayList<>();
 
     public static void main(String[] args)throws IOException {
-        /*read_file();
+        read_file();
         Parser parser = new Parser(fileIn);
         Prediction pred = new Prediction(parser);
 
-        double total_time10=0;
+        /*double total_time10=0;
         for(int i=0; i<10;i++){
             long startTime = System.currentTimeMillis();
             pred.leave_one_out();
@@ -23,9 +23,11 @@ public class Main {
             long runTime = endTime - startTime;
             total_time10 +=runTime;
         }
-        System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");
-*/
-        euclid_distance();
+        System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");*/
+        for(int i=1; i<=100; i++) {
+            pred.knn_single(i, 10).print_knn();
+        }
+
     }
 
 

@@ -100,7 +100,7 @@ public class Prediction {
 
     public KnnEntry knn_single(int user, int neigh_size){
         //K-NN implementation - in hashmap: key->target_user, value->N closest neighbours
-        HashMap<Double, Integer> distances = new HashMap<>(); //where key it the distance and value is user id
+        Map<Double, Integer> distances = new TreeMap<>(); //where key it the distance and value is user id
         //with this strat, I wont have to sort it to get n closest users
         HashMap<Integer, Integer> target = users.get(user);
         for(Map.Entry<Integer, HashMap<Integer, Integer>> itr: users.entrySet()){
@@ -128,6 +128,15 @@ public class Prediction {
         return dist/common.size();
     }
 
+    public double mean_item_rating_knn(KnnEntry u, int item){
+        List<Integer> nn = u.get_neighbours();
+        HashMap<Integer, HashMap<Integer, Integer>> knn_users = new HashMap<>();
+        for(int i: nn){
+            knn_users.put(i, users.get(i);
+        }
+
+    }
+
     public List<Integer> retrieve_n_fromlist(List<Integer> in, int n){
         List<Integer> output = new ArrayList<>();
         for(int i=0; i<n; i++){
@@ -135,6 +144,7 @@ public class Prediction {
         }
         return output;
     }
+
 
     public int cant_predict(){
         int count =0;
