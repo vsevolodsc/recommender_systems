@@ -12,10 +12,14 @@ public class Main {
 
     public static void main(String[] args)throws IOException {
         read_file();
-        Parser parser = new Parser(fileIn);
-        Prediction pred = new Prediction(parser,15);
+        //test_naive();
+        //test_knn();
+    }
 
-        /*double total_time10=0;
+    private void test_naive() throws IOException{
+        Parser parser = new Parser(fileIn);
+        Prediction pred = new Prediction(parser,5);
+        double total_time10=0;
         for(int i=0; i<10;i++){
             long startTime = System.currentTimeMillis();
             pred.leave_one_out_naive();
@@ -23,7 +27,12 @@ public class Main {
             long runTime = endTime - startTime;
             total_time10 +=runTime;
         }
-        System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");*/
+        System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");
+    }
+
+    private void test_knn() throws IOException{
+        Parser parser = new Parser(fileIn);
+        Prediction pred = new Prediction(parser,5);
         double total_time10=0;
         for(int i=0; i<10;i++){
             long startTime = System.currentTimeMillis();
@@ -33,11 +42,37 @@ public class Main {
             total_time10 +=runTime;
         }
         System.out.println("Average runtime of 10 L1o tests of knn approach with k=5 : "+total_time10/1000+" seconds");
-        /*pred.leave_one_out_knn(10);
-        pred.leave_one_out_knn(15);
-        pred.leave_one_out_knn(20);*/
+        pred = new Prediction(parser,10);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_knn();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of knn approach with k=10 : "+total_time10/1000+" seconds");
+        pred = new Prediction(parser,15);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_knn();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of knn approach with k=15 : "+total_time10/1000+" seconds");
+        pred = new Prediction(parser,20);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_knn();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of knn approach with k=20 : "+total_time10/1000+" seconds");
     }
-
 
     private static void read_file() throws IOException{
         BufferedReader br = new BufferedReader(new FileReader("src/100k.csv"));

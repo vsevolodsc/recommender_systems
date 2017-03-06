@@ -174,11 +174,9 @@ class Prediction {
         }
         return dist/common.size();
     }
-    @SuppressWarnings("unused")
-    public double mean_item_rating_knn(KnnEntry u, int user, int item, int nn_size){
+
+    private double mean_item_rating_knn(KnnEntry u, int item){
         HashMap<Integer, Double> nn = u.get_neighbours();
-        int sum_num =0; //numerator (p.28)
-        int sum_den = 0; //denominator (p.28)
         HashMap<Integer, HashMap<Integer, Integer>> knn_users = new HashMap<>();
         for(int i: nn.keySet()){
             knn_users.put(i, users.get(i));
@@ -189,9 +187,6 @@ class Prediction {
             if(en.getValue().containsKey(item)){
                 count++;
                 sum += en.getValue().get(item);
-                /*double wj = 1 - u.get_neighbours().get(en.getKey());
-                sum_den+=wj;
-                sum_num+=wj*en.getValue().get(item);*/
             }
         }
         return sum/count;
@@ -211,8 +206,8 @@ class Prediction {
 
     double leave_one_out_knn() throws IOException{
         //Returns the average rmse
-        //String file_string = "./L1O_knn_"+nn_size+".csv";
-        l1o_csv = new FileWriter("./L1O_knn_5.csv");
+        String file_string = "./L1O_knn_"+nearest_n_size+".csv";
+        l1o_csv = new FileWriter(file_string);
         l1o_csv.append(header);
         l1o_csv.append(NEWLINE_DELIM);
         int count =0;
@@ -221,7 +216,7 @@ class Prediction {
             for(int j=0; j<get_item_ids().size(); j++) {
                 try{
                     int rating = getUsers().get(i).get(j);
-                    double mean_rating = mean_item_rating_knn(users_nn.get(i+1),i,j,nearest_n_size);
+                    double mean_rating = mean_item_rating_knn(users_nn.get(i),j);
                     double rmse = Math.abs(mean_rating- rating);
                     total_rmse += rmse;
                     l1o_csv.append(String.valueOf(i));
