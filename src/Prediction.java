@@ -106,7 +106,7 @@ class Prediction {
         return sum/count;
     }
     @SuppressWarnings("unused")
-    public double leave_one_out_naive() throws IOException {
+    double leave_one_out_naive() throws IOException {
         //Returns the average rmse
         File l1o = new File("./L10-out.csv");
         if(l1o.exists()){
@@ -145,6 +145,15 @@ class Prediction {
     /*END: Naive Rating Prediction*/
 
     /*START: K-nearest-neighbours(KNN) prediction approach*/
+    private double euclid_distance(HashMap<Integer, Integer> target,HashMap<Integer, Integer> users){
+        List<Integer> common = common_items(target, users);
+        double dist=0;
+        for(int i: common){
+            dist += Math.pow(target.get(i)-users.get(i),2);
+        }
+        return dist/common.size();
+    }
+
     private KnnEntry knn_single(int user, int neigh_size){
         //K-NN implementation - in hashmap: key->target_user, value->N closest neighbours
         TreeMap<Double, Integer> distances = new TreeMap<>(); //where key it the distance and value is user id
@@ -161,18 +170,6 @@ class Prediction {
         HashMap<Double, Integer> out_prep = retrieve_n_fromlist(distances, neigh_size);
         HashMap<Integer, Double> out = flip_hashmap(out_prep);
         return new KnnEntry(user, out);
-    }
-
-    private double euclid_distance(HashMap<Integer, Integer> target,HashMap<Integer, Integer> users){
-        List<Integer> target_items = new ArrayList<>(target.keySet());
-        List<Integer> user_items = new ArrayList<>(users.keySet());
-        List<Integer> common = new ArrayList<>(target_items);
-        common.retainAll(user_items);
-        double dist=0;
-        for(int i: common){
-            dist += Math.pow(target.get(i)-users.get(i),2);
-        }
-        return dist/common.size();
     }
 
     private double mean_item_rating_knn(KnnEntry u, int item){
@@ -204,6 +201,14 @@ class Prediction {
         return output;
     }
 
+    private HashMap<Integer, Double> flip_hashmap(HashMap<Double, Integer> in){
+        HashMap<Integer, Double> out = new HashMap<>();
+        for(Map.Entry<Double, Integer> i: in.entrySet()){
+            out.put(i.getValue(),i.getKey());
+        }
+        return out;
+    }
+
     double leave_one_out_knn() throws IOException{
         //Returns the average rmse
         String file_string = "./L1O_knn_"+nearest_n_size+".csv";
@@ -214,38 +219,88 @@ class Prediction {
         int total_rmse=0;
         for(int i=0; i<get_user_ids().size(); i++){
             for(int j=0; j<get_item_ids().size(); j++) {
-                try{
-                    int rating = getUsers().get(i).get(j);
-                    double mean_rating = mean_item_rating_knn(users_nn.get(i),j);
-                    double rmse = Math.abs(mean_rating- rating);
-                    total_rmse += rmse;
-                    l1o_csv.append(String.valueOf(i));
-                    l1o_csv.append(COMMA_DELIM);
-                    l1o_csv.append(String.valueOf(j));
-                    l1o_csv.append(COMMA_DELIM);
-                    l1o_csv.append(String.valueOf(rating));
-                    l1o_csv.append(COMMA_DELIM);
-                    l1o_csv.append(String.valueOf(mean_rating));
-                    l1o_csv.append(COMMA_DELIM);
-                    l1o_csv.append(String.valueOf(rmse));
-                    l1o_csv.append(NEWLINE_DELIM);
-                    count++;
-                    l1o_csv.flush();
-                }catch (Exception e){
-                }
+                int rating = getUsers().get(i).get(j);
+                double mean_rating = mean_item_rating_knn(users_nn.get(i),j);
+                double rmse = Math.abs(mean_rating- rating);
+                total_rmse += rmse;
+                l1o_csv.append(String.valueOf(i));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(j));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(rating));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(mean_rating));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(rmse));
+                l1o_csv.append(NEWLINE_DELIM);
+                count++;
+                l1o_csv.flush();
             }
         }
         l1o_csv.close();
         return (double)total_rmse/count;
     }
-
-    private HashMap<Integer, Double> flip_hashmap(HashMap<Double, Integer> in){
-        HashMap<Integer, Double> out = new HashMap<>();
-        for(Map.Entry<Double, Integer> i: in.entrySet()){
-            out.put(i.getValue(),i.getKey());
-        }
-        return out;
-    }
     /*END: K-nearest-neighbours(KNN) prediction approach*/
+
+    /*START: Pearson corr & Resnicks prediction*/
+    private double pearson_similarity(int target_id, HashMap<Integer, Integer> target,int compare_id, HashMap<Integer, Integer> comp) {
+        User target_user = new User(target_id, target);
+        User compare_user = new User(compare_id, comp);
+        double mean_tgt = target_user.object_mean();
+        double mean_comp = compare_user.object_mean();
+        double num=0, den=0, den1=0, den2=0;
+        List<Integer> common = common_items(target, comp);
+        for(int i: common){
+            num += (users.get(target_id).get(i)-mean_tgt)*(users.get(compare_id).get(i)-mean_comp);
+            den1 += Math.pow((users.get(target_id).get(i)-mean_tgt),2);
+            den2 += Math.pow((users.get(compare_id).get(i)-mean_comp),2);
+        }
+        return num/(Math.sqrt(den1)*Math.sqrt(den2));
+    }
+
+    private List<Integer> common_items(HashMap<Integer, Integer> u1, HashMap<Integer, Integer> u2){
+        List<Integer> target_items = new ArrayList<>(u1.keySet());
+        List<Integer> user_items = new ArrayList<>(u2.keySet());
+        List<Integer> common = new ArrayList<>(target_items);
+        common.retainAll(user_items);
+        return common;
+    }
+
+    private double resnicks_prediction(KnnEntry u, int item){
+        return 0;
+    }
+
+    public double leave_out_out_resnicks() throws IOException{
+        String filename = "./L1O_resnicks_"+nearest_n_size+".csv";
+        l1o_csv = new FileWriter(filename);
+        l1o_csv.append(header);
+        l1o_csv.append(NEWLINE_DELIM);
+        int count = 0;
+        int total_rmse = 0;
+        for(int i=0; i<get_user_ids().size(); i++){
+            for(int j=0; j<get_item_ids().size(); j++) {
+                int rating = getUsers().get(i).get(j);
+                double pred_rating = resnicks_prediction(users_nn.get(i), j);
+                double rmse = Math.abs(pred_rating- rating);
+                total_rmse += rmse;
+                l1o_csv.append(String.valueOf(i));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(j));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(rating));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(pred_rating));
+                l1o_csv.append(COMMA_DELIM);
+                l1o_csv.append(String.valueOf(rmse));
+                l1o_csv.append(NEWLINE_DELIM);
+                count++;
+                l1o_csv.flush();
+            }
+        }
+        l1o_csv.close();
+        return total_rmse/count;
+    }
+    /*END: Pearson corr & Resnicks prediction*/
+
 
 }
