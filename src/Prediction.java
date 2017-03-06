@@ -219,22 +219,24 @@ class Prediction {
         int total_rmse=0;
         for(int i=0; i<get_user_ids().size(); i++){
             for(int j=0; j<get_item_ids().size(); j++) {
-                int rating = getUsers().get(i).get(j);
-                double mean_rating = mean_item_rating_knn(users_nn.get(i),j);
-                double rmse = Math.abs(mean_rating- rating);
-                total_rmse += rmse;
-                l1o_csv.append(String.valueOf(i));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(j));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(rating));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(mean_rating));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(rmse));
-                l1o_csv.append(NEWLINE_DELIM);
-                count++;
-                l1o_csv.flush();
+                try {
+                    int rating = users.get(i).get(j);
+                    double mean_rating = mean_item_rating_knn(users_nn.get(i), j);
+                    double rmse = Math.abs(mean_rating - rating);
+                    total_rmse += rmse;
+                    l1o_csv.append(String.valueOf(i));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(j));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rating));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(mean_rating));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rmse));
+                    l1o_csv.append(NEWLINE_DELIM);
+                    count++;
+                    l1o_csv.flush();
+                }catch(Exception e){}
             }
         }
         l1o_csv.close();
@@ -243,7 +245,7 @@ class Prediction {
     /*END: K-nearest-neighbours(KNN) prediction approach*/
 
     /*START: Pearson corr & Resnicks prediction*/
-    private double pearson_similarity(int target_id, HashMap<Integer, Integer> target,int compare_id, HashMap<Integer, Integer> comp) {
+    private double pearson_similarity(int target_id, HashMap<Integer, Integer> target, int compare_id, HashMap<Integer, Integer> comp) {
         User target_user = new User(target_id, target);
         User compare_user = new User(compare_id, comp);
         double mean_tgt = target_user.object_mean();
@@ -255,7 +257,8 @@ class Prediction {
             den1 += Math.pow((users.get(target_id).get(i)-mean_tgt),2);
             den2 += Math.pow((users.get(compare_id).get(i)-mean_comp),2);
         }
-        return num/(Math.sqrt(den1)*Math.sqrt(den2));
+        double result = num/(Math.sqrt(den1)*Math.sqrt(den2));
+        return result;
     }
 
     private List<Integer> common_items(HashMap<Integer, Integer> u1, HashMap<Integer, Integer> u2){
@@ -267,10 +270,26 @@ class Prediction {
     }
 
     private double resnicks_prediction(KnnEntry u, int item){
-        return 0;
+        List<Integer> nn = new ArrayList<>(u.get_neighbours().keySet());
+        User tgt = new User(u.get_user(), users.get(u.get_user()));
+        double tgt_mean = tgt.object_mean();
+        double num=0, den=0;
+        for(int i: nn){
+            if(users.get(i).containsKey(item)) {
+                User comp = new User(i, users.get(i));
+                num += (users.get(i).get(item) - comp.object_mean()) *
+                        pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i));
+                den += Math.abs(pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i)));
+            }
+        }
+        double div = num/den;
+        if(Double.isNaN(div)){
+            div=0;
+        }
+        return Math.round(tgt_mean+div);
     }
 
-    public double leave_out_out_resnicks() throws IOException{
+    public double leave_one_out_resnicks() throws IOException{
         String filename = "./L1O_resnicks_"+nearest_n_size+".csv";
         l1o_csv = new FileWriter(filename);
         l1o_csv.append(header);
@@ -279,22 +298,24 @@ class Prediction {
         int total_rmse = 0;
         for(int i=0; i<get_user_ids().size(); i++){
             for(int j=0; j<get_item_ids().size(); j++) {
-                int rating = getUsers().get(i).get(j);
-                double pred_rating = resnicks_prediction(users_nn.get(i), j);
-                double rmse = Math.abs(pred_rating- rating);
-                total_rmse += rmse;
-                l1o_csv.append(String.valueOf(i));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(j));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(rating));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(pred_rating));
-                l1o_csv.append(COMMA_DELIM);
-                l1o_csv.append(String.valueOf(rmse));
-                l1o_csv.append(NEWLINE_DELIM);
-                count++;
-                l1o_csv.flush();
+                try {
+                    int rating = users.get(i).get(j);
+                    double pred_rating = resnicks_prediction(users_nn.get(i), j);
+                    double rmse = Math.abs(pred_rating - rating);
+                    total_rmse += rmse;
+                    l1o_csv.append(String.valueOf(i));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(j));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rating));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(pred_rating));
+                    l1o_csv.append(COMMA_DELIM);
+                    l1o_csv.append(String.valueOf(rmse));
+                    l1o_csv.append(NEWLINE_DELIM);
+                    count++;
+                    l1o_csv.flush();
+                }catch(Exception e){}
             }
         }
         l1o_csv.close();

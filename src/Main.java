@@ -14,9 +14,10 @@ public class Main {
         read_file();
         //test_naive();
         //test_knn();
+        test_resnicks();
     }
 
-    private void test_naive() throws IOException{
+    private static void test_naive() throws IOException{
         Parser parser = new Parser(fileIn);
         Prediction pred = new Prediction(parser,5);
         double total_time10=0;
@@ -30,7 +31,7 @@ public class Main {
         System.out.println("Average runtime of 10 L1o tests: "+total_time10/1000+" seconds");
     }
 
-    private void test_knn() throws IOException{
+    private static void test_knn() throws IOException{
         Parser parser = new Parser(fileIn);
         Prediction pred = new Prediction(parser,5);
         double total_time10=0;
@@ -72,6 +73,50 @@ public class Main {
             total_time10 +=runTime;
         }
         System.out.println("Average runtime of 10 L1o tests of knn approach with k=20 : "+total_time10/1000+" seconds");
+    }
+
+    private static void test_resnicks() throws IOException{
+        Parser parser = new Parser(fileIn);
+        Prediction pred = new Prediction(parser,5);
+        double total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_resnicks();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of resnicks approach with k=5 : "+total_time10/1000+" seconds");
+        pred = new Prediction(parser,10);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_resnicks();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of resnicks approach with k=10 : "+total_time10/1000+" seconds");
+        pred = new Prediction(parser,15);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_resnicks();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of resnicks approach with k=15 : "+total_time10/1000+" seconds");
+        pred = new Prediction(parser,20);
+        total_time10=0;
+        for(int i=0; i<10;i++){
+            long startTime = System.currentTimeMillis();
+            pred.leave_one_out_resnicks();
+            long endTime   = System.currentTimeMillis();
+            long runTime = endTime - startTime;
+            total_time10 +=runTime;
+        }
+        System.out.println("Average runtime of 10 L1o tests of resnicks approach with k=20 : "+total_time10/1000+" seconds");
     }
 
     private static void read_file() throws IOException{
