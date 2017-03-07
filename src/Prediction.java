@@ -3,7 +3,7 @@ import java.util.*;
 
 /**
  *
- * Created by vsevo on 22/02/2017.
+ * Created by Vsevolods Caka on 15/02/2017.
  */
 class Prediction {
     private HashMap<Integer, HashMap<Integer, Integer>> users = new HashMap<>();
@@ -21,12 +21,18 @@ class Prediction {
         populate_knn();
 
     }
+
+    Prediction(Parser parser){
+        users = populate_users(parser);
+        items = populate_items(parser);
+    }
     /*START: Setup*/
     private void populate_knn(){
         for(int i=1; i<=942; i++){
             users_nn.add(knn_single(i,nearest_n_size));
         }
     }
+
     private static HashMap<Integer, HashMap<Integer,Integer>> populate_users(Parser parser){
         return parser.list_users();
     }
@@ -106,12 +112,7 @@ class Prediction {
         return sum/count;
     }
     @SuppressWarnings("unused")
-    double leave_one_out_naive() throws IOException {
-        //Returns the average rmse
-        File l1o = new File("./L10-out.csv");
-        if(l1o.exists()){
-            l1o.delete();
-        }
+    Output leave_one_out_naive() throws IOException {
         l1o_csv = new FileWriter("./L10-out.csv");
         l1o_csv.append(header);
         l1o_csv.append(NEWLINE_DELIM);
@@ -133,14 +134,14 @@ class Prediction {
                     l1o_csv.append(COMMA_DELIM);
                     l1o_csv.append(String.valueOf(rmse));
                     l1o_csv.append(NEWLINE_DELIM);
+                    l1o_csv.flush();
                     count++;
                 }catch (Exception e){
                 }
             }
         }
-        l1o_csv.flush();
         l1o_csv.close();
-        return (double)total_rmse/count;
+        return new Output((double)total_rmse/count, (double)count/100000);
     }
     /*END: Naive Rating Prediction*/
 
@@ -209,7 +210,7 @@ class Prediction {
         return out;
     }
 
-    double leave_one_out_knn() throws IOException{
+    Output leave_one_out_knn() throws IOException{
         //Returns the average rmse
         String file_string = "./L1O_knn_"+nearest_n_size+".csv";
         l1o_csv = new FileWriter(file_string);
@@ -240,7 +241,7 @@ class Prediction {
             }
         }
         l1o_csv.close();
-        return (double)total_rmse/count;
+        return new Output((double)total_rmse/count, (double)count/100000);
     }
     /*END: K-nearest-neighbours(KNN) prediction approach*/
 
@@ -257,8 +258,7 @@ class Prediction {
             den1 += Math.pow((users.get(target_id).get(i)-mean_tgt),2);
             den2 += Math.pow((users.get(compare_id).get(i)-mean_comp),2);
         }
-        double result = num/(Math.sqrt(den1)*Math.sqrt(den2));
-        return result;
+        return num/(Math.sqrt(den1)*Math.sqrt(den2));
     }
 
     private List<Integer> common_items(HashMap<Integer, Integer> u1, HashMap<Integer, Integer> u2){
@@ -289,7 +289,7 @@ class Prediction {
         return Math.round(tgt_mean+div);
     }
 
-    public double leave_one_out_resnicks() throws IOException{
+    Output leave_one_out_resnicks() throws IOException{
         String filename = "./L1O_resnicks_"+nearest_n_size+".csv";
         l1o_csv = new FileWriter(filename);
         l1o_csv.append(header);
@@ -319,7 +319,7 @@ class Prediction {
             }
         }
         l1o_csv.close();
-        return total_rmse/count;
+        return new Output((double)total_rmse/count, (double)count/100000);
     }
     /*END: Pearson corr & Resnicks prediction*/
 

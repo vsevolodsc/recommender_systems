@@ -3,7 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by vsevo on 13/02/2017.
+ *
+ * Created by Vsevolods Caka on 13/02/2017.
  */
 public class Parser {
     private List<List<Integer>> data = new ArrayList<>();
@@ -12,7 +13,7 @@ public class Parser {
         data = d;
     }
 
-    public HashMap<Integer, HashMap<Integer, Integer>> list_items(){
+    HashMap<Integer, HashMap<Integer, Integer>> list_items(){
         HashMap<Integer, HashMap<Integer, Integer>> out = new HashMap<>();
         for(List<Integer> entry: data){
             HashMap<Integer, Integer> temp= new HashMap<>();
@@ -27,7 +28,7 @@ public class Parser {
         return out;
     }
 
-    public HashMap<Integer, HashMap<Integer, Integer>> list_users(){
+    HashMap<Integer, HashMap<Integer, Integer>> list_users(){
         HashMap<Integer, HashMap<Integer, Integer>> out = new HashMap<>();
         for(List<Integer> entry: data){
             HashMap<Integer, Integer> temp= new HashMap<>();

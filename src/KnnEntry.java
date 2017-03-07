@@ -2,7 +2,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by vsevo on 04/03/2017.
+ *
+ * Created by Vsevolods Caka on 17/02/2017.
  */
 public class KnnEntry {
     private int user;
