@@ -8,8 +8,8 @@ public class User implements Statistics{
     private int user_id;
     private HashMap<Integer, Integer> item_rating;
 
-    User(int item, HashMap<Integer, Integer> in){
-        user_id = item;
+    User(int user, HashMap<Integer, Integer> in){
+        user_id = user;
         item_rating = in;
     }
 
@@ -48,28 +48,21 @@ public class User implements Statistics{
         return user_id;
     }
 
-    public Set<Integer> get_usr_items(){
+    Set<Integer> get_usr_items(){
         return item_rating.keySet();
     }
 
-    public Collection<Integer> get_usr_ratings(){
+    Collection<Integer> get_usr_ratings(){
         return item_rating.values();
     }
 
-    /*public int get_itemrating(int item){
-        HashMap<Integer, Integer> ui = usr.getValue();
-        return ui.get(item);
-    }*/
-
-    public boolean has_ratedItem(int item){
-        boolean hasRated = false;
-        for(int i: get_usr_items()){
-            if(i==item){
-                hasRated = true;
-                break;
-            }
-        }
-        return hasRated;
+    void print_user(){
+        System.out.println("User id: "+get_usr_id());
+        System.out.println("Mean rating: "+object_mean());
+        System.out.println("Median rating: "+object_median());
+        System.out.println("Max rating: "+getMax_rating());
+        System.out.println("Min rating: "+getMin_rating());
+        System.out.println("Standard deviation: "+std_dev()+"\n");
     }
 
 }

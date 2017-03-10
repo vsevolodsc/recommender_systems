@@ -1,6 +1,7 @@
 /**
  *
  * Created by Vsevolods Caka on 28/02/2017.
+ * Helper class for L1O output parsing
  */
 public class Output {
     private double rmse =0;
@@ -11,10 +12,10 @@ public class Output {
         coverage=cov;
     }
 
-    public double getRmse(){
+    double getRmse(){
         return rmse;
     }
-    public double getCoverage(){
+    double getCoverage(){
         return coverage;
     }
 }

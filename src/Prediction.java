@@ -14,15 +14,17 @@ class Prediction {
     private final String header = "user_id,item_id,actual_rating,predicted_rating,RMSE";
     private List<KnnEntry> users_nn = new ArrayList<>();
     private int nearest_n_size=0;
+
     Prediction(Parser parser, int nn_size){
+        //construction for knn and resnicks
         users = populate_users(parser);
         items = populate_items(parser);
         nearest_n_size=nn_size;
         populate_knn();
-
     }
 
     Prediction(Parser parser){
+        //naive solution constructor.
         users = populate_users(parser);
         items = populate_items(parser);
     }
@@ -44,8 +46,8 @@ class Prediction {
     private HashMap<Integer, HashMap<Integer, Integer>> getUsers(){
         return users;
     }
-    @SuppressWarnings("unused")
-    public HashMap<Integer, HashMap<Integer, Integer>> getItems(){
+
+    private HashMap<Integer, HashMap<Integer, Integer>> getItems(){
         return items;
     }
 
@@ -57,40 +59,6 @@ class Prediction {
         return items.keySet();
     }
     /*END: Setup*/
-
-    /*START: Stats*/
-    @SuppressWarnings("unused")
-    public int cant_predict(){
-        int count =0;
-        for(int i: get_user_ids()){
-            for(int j: get_item_ids()){
-                if(mean_item_rating(i,j)==0){
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-    @SuppressWarnings("unused")
-    public double coverage(){
-        double denom = get_item_ids().size()*get_user_ids().size();
-        double count =0;
-        for(int i=0; i<get_user_ids().size(); i++){
-            for(int j=0; j<get_item_ids().size(); j++){
-                if(mean_item_rating(i,j)==0.0){
-                    count++;
-                }
-            }
-        }
-        double numer = denom-count;
-        return numer/denom;
-    }
-    @SuppressWarnings("unused")
-    public double density(){
-        double denom = get_item_ids().size()*get_user_ids().size();
-        return 100000/denom;
-    }
-    /*END: Stats*/
 
     /*START: Naive Rating prediction*/
     private double mean_item_rating(int user_id, int item_id){
@@ -113,7 +81,7 @@ class Prediction {
     }
     @SuppressWarnings("unused")
     Output leave_one_out_naive() throws IOException {
-        l1o_csv = new FileWriter("./L10-out.csv");
+        l1o_csv = new FileWriter("csv_out/L10-out.csv");
         l1o_csv.append(header);
         l1o_csv.append(NEWLINE_DELIM);
         int count =0;
@@ -169,7 +137,7 @@ class Prediction {
             distances.put(distance, itr.getKey());
         }
         HashMap<Double, Integer> out_prep = retrieve_n_fromlist(distances, neigh_size);
-        HashMap<Integer, Double> out = flip_hashmap(out_prep);
+        HashMap<Integer, Double> out = flip_hashmap(out_prep); //flipping for easier access on later stages
         return new KnnEntry(user, out);
     }
 
@@ -177,6 +145,7 @@ class Prediction {
         HashMap<Integer, Double> nn = u.get_neighbours();
         HashMap<Integer, HashMap<Integer, Integer>> knn_users = new HashMap<>();
         for(int i: nn.keySet()){
+            if(u.get_user()!=i)
             knn_users.put(i, users.get(i));
         }
         int count =0;
@@ -275,11 +244,13 @@ class Prediction {
         double tgt_mean = tgt.object_mean();
         double num=0, den=0;
         for(int i: nn){
-            if(users.get(i).containsKey(item)) {
-                User comp = new User(i, users.get(i));
-                num += (users.get(i).get(item) - comp.object_mean()) *
-                        pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i));
-                den += Math.abs(pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i)));
+            if(u.get_user()!=i) {
+                if (users.get(i).containsKey(item)) {
+                    User comp = new User(i, users.get(i));
+                    num += (users.get(i).get(item) - comp.object_mean()) *
+                            pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i));
+                    den += Math.abs(pearson_similarity(u.get_user(), users.get(u.get_user()), i, users.get(i)));
+                }
             }
         }
         double div = num/den;
@@ -290,7 +261,7 @@ class Prediction {
     }
 
     Output leave_one_out_resnicks() throws IOException{
-        String filename = "./L1O_resnicks_"+nearest_n_size+".csv";
+        String filename = "csv_out/L1O_resnicks_"+nearest_n_size+".csv";
         l1o_csv = new FileWriter(filename);
         l1o_csv.append(header);
         l1o_csv.append(NEWLINE_DELIM);
@@ -322,6 +293,4 @@ class Prediction {
         return new Output((double)total_rmse/count, (double)count/100000);
     }
     /*END: Pearson corr & Resnicks prediction*/
-
-
 }

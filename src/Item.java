@@ -71,5 +71,13 @@ public class Item implements Statistics{
         return count;
     }
 
+    public void print_item(){
+        System.out.println("Item id: "+get_item_id());
+        System.out.println("Mean rating: "+object_mean());
+        System.out.println("Median rating: "+object_median());
+        System.out.println("Max rating: "+getMax_rating());
+        System.out.println("Min rating: "+getMin_rating());
+        System.out.println("Standard deviation: "+std_dev()+"\n");
+    }
 
 }
